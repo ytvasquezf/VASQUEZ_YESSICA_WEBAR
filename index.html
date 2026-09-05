@@ -1,0 +1,240 @@
+Sección,Campo,Fórmula/Valor
+Validación,Días_Recaudo,=ESNUM(D2)
+Validación,Duplicados,=CONTAR.SI($A$2:$A$41;A2)>1
+Validación,Faltantes,=CONTAR.BLANCO(D2)
+
+Medidas,Media Días,=PROMEDIO(D2:D41)
+Medidas,Mediana Días,=MEDIANA(D2:D41)
+Medidas,Moda Días,=MODA.UNO(D2:D41)
+Medidas,Mínimo Días,=MIN(D2:D41)
+Medidas,Máximo Días,=MAX(D2:D41)
+Medidas,Rango Días,=MAX(D2:D41)-MIN(D2:D41)
+Medidas,Varianza Días,=VAR.S(D2:D41)
+Medidas,Desv.Est Días,=DESVEST.S(D2:D41)
+Medidas,CV Días,=DESVEST.S(D2:D41)/PROMEDIO(D2:D41)
+
+Frecuencias,Tabla,=FRECUENCIA(D2:D41;{15;20;25;30;35;40;45;50;55;60})
+Frecuencias,Porcentaje,=B2/CONTARA(D2:D41)
+Frecuencias,% Acumulado,=SUMA($B$2:B2)/CONTARA(D2:D41)
+
+IQR,Q1,=PERCENTIL.INC(D2:D41;0.25)
+IQR,Q3,=PERCENTIL.INC(D2:D41;0.75)
+IQR,IQR,=Q3-Q1
+IQR,Límite Inferior,=Q1-1.5*IQR
+IQR,Límite Superior,=Q3+1.5*IQR
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urbano | Vehículo Todoterreno Compacto 4x4 en WebAR</title>
+  <script
+    type="module"
+    src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.1.0/model-viewer.min.js">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    :root {
+      --color-principal: #1b2a38;
+      --color-secundario: #ffffff;
+      --color-gris: #f0f4f8;
+      --color-promocion: #e63946;
+      --color-acento: #008080;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: var(--color-secundario);
+      color: var(--color-principal);
+      line-height: 1.6;
+    }
+    header {
+      background-color: var(--color-principal);
+      color: var(--color-secundario);
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2rem;
+      letter-spacing: 3px;
+    }
+    main {
+      width: min(1100px, 92%);
+      margin: 35px auto;
+    }
+    .producto {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 35px;
+      align-items: center;
+    }
+    .visor {
+      min-height: 500px;
+      background-color: var(--color-gris);
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+    }
+    model-viewer {
+      width: 100%;
+      height: 500px;
+      background-color: var(--color-gris);
+    }
+    .ar-button {
+      position: absolute;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%);
+      border: none;
+      border-radius: 30px;
+      padding: 14px 24px;
+      background-color: var(--color-principal);
+      color: var(--color-secundario);
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .informacion h2 {
+      font-size: 2.3rem;
+      margin-bottom: 15px;
+    }
+    .descripcion {
+      font-size: 1.05rem;
+      margin-bottom: 20px;
+    }
+    .beneficios {
+      margin: 20px 0;
+      padding-left: 22px;
+    }
+    .precio-anterior {
+      color: #666666;
+      font-size: 1.1rem;
+      text-decoration: line-through;
+    }
+    .precio-actual {
+      color: var(--color-promocion);
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .cta {
+      display: inline-block;
+      background-color: var(--color-principal);
+      color: var(--color-secundario);
+      padding: 15px 28px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: opacity 0.2s ease;
+    }
+    .cta:hover {
+      opacity: 0.8;
+    }
+    .qr-section {
+      margin-top: 45px;
+      padding: 30px;
+      background-color: var(--color-gris);
+      border-radius: 18px;
+      text-align: center;
+    }
+    #qrCode {
+      display: flex;
+      justify-content: center;
+      margin: 20px auto;
+    }
+    footer {
+      margin-top: 40px;
+      padding: 25px;
+      background-color: var(--color-principal);
+      color: var(--color-secundario);
+      text-align: center;
+    }
+    @media (max-width: 800px) {
+      .producto {
+        grid-template-columns: 1fr;
+      }
+      .visor,
+      model-viewer {
+        min-height: 400px;
+        height: 400px;
+      }
+      .informacion h2 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>URBANO MOTORS</h1>
+    <p>Aventura, tracción y estilo retro en cada recorrido</p>
+  </header>
+  <main>
+    <section class="producto">
+      <div class="visor">
+        <model-viewer
+          src="vehiculo_todoterreno.glb"
+          poster="vehiculo_preview.png"
+          alt="Modelo tridimensional de vehículo todoterreno compacto 4x4 de estilo retro en color azul turquesa"
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          ar-placement="floor"
+          ar-scale="auto"
+          camera-controls
+          auto-rotate
+          shadow-intensity="1.2"
+          exposure="1"
+          touch-action="pan-y">
+          <button class="ar-button" slot="ar-button" type="button">
+            Ver en mi espacio
+          </button>
+        </model-viewer>
+      </div>
+      <div class="informacion">
+        <h2>Campero Todoterreno 4x4 LuAZ Retro</h2>
+        <p class="descripcion">
+          Vehículo campero todoterreno compacto de tracción 4x4 con diseño clásico en tono azul turquesa y techo de lona. Ideal para terrenos exigentes, escapadas al aire libre y amantes de los autos retro todoterreno.
+        </p>
+        <ul class="beneficios">
+          <li>Tracción integral 4x4 adaptable a todo tipo de terreno.</li>
+          <li>Carrocería ligera con capota de lona desmontable.</li>
+          <li>Diseño clásico icónico con excelente altura sobre el suelo.</li>
+          <li>Mantenimiento sencillo y gran resistencia mecánica.</li>
+        </ul>
+        <p class="precio-anterior">Antes: $45.000.000 COP</p>
+        <p class="precio-actual">Hoy: $38.900.000 COP</p>
+        <a
+          class="cta"
+          href="#cotizar"
+          target="_blank"
+          rel="noopener noreferrer">
+          Solicitar Prueba de Manejo
+        </a>
+      </div>
+    </section>
+    <section class="qr-section">
+      <h2>Explora el vehículo desde tu celular</h2>
+      <p>
+        Escanea el código QR para abrir la experiencia y visualizar el campero todoterreno en realidad aumentada desde tu dispositivo móvil.
+      </p>
+      <div id="qrCode"></div>
+    </section>
+  </main>
+  <footer>
+    <p>Urbano Motors · Experiencia comercial WebAR 3D</p>
+  </footer>
+  <script>
+    new QRCode(document.querySelector("#qrCode"), {
+      text: window.location.href,
+      width: 180,
+      height: 180,
+      correctLevel: QRCode.CorrectLevel.H
+    });
+  </script>
+</body>
+</html>
